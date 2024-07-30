@@ -8,6 +8,7 @@ This dataset contains daily exchange rates of the Iranian Rial (IRR) against the
 I personally created this dataset using a web crawler to gather data from various financial sources.
 
 ### Data Collection
+
 The dataset was created through a web crawling process undertaken by myself, ensuring comprehensive and accurate data extraction from various financial sources.
 
 ## Table of Contents
@@ -18,13 +19,11 @@ The dataset was created through a web crawling process undertaken by myself, ens
 4. [Usage](#usage)
 5. [Visualizations](#visualizations)
 6. [Models and Analysis](#models-and-analysis)
-7. [Contributing](#contributing)
-8. [License](#license)
-9. [Contact](#contact)
+7. [How to use website?](#website)
 
 ## Dataset
 
-The dataset used in this project contains historical exchange rates of the Iranian Rial against the US Dollar. The dataset includes columns such as Date, Open, Low, High, Close, and Mean exchange rates. 
+The dataset used in this project contains historical exchange rates of the Iranian Rial against the US Dollar. The dataset includes columns such as Date, Open, Low, High, Close, and Mean exchange rates.
 
 - **Source:** [Dataset Link](https://www.kaggle.com/)
 - **Format:** Excel file (`Dollor_Rate_Dataset.xlsx`)
@@ -48,3 +47,28 @@ You can install these libraries using `pip`:
 
 ```bash
 pip install numpy pandas matplotlib seaborn warnings prophet scikit-learn streamlit plotly statsmodels
+```
+
+## Visualizations
+
+![1](https://github.com/user-attachments/assets/f422753e-b428-4c84-b370-37bacdb13153)
+![2](https://github.com/user-attachments/assets/cc738d6b-4c28-43c7-9d9b-023d0d605f66)
+![3](https://github.com/user-attachments/assets/afb05edd-5f20-4698-86f3-e5899d5d5d9f)
+
+## Models-and-Analysis
+
+Forecasted by Mata prophet and other LSTM networks & regressors.
+Prophet is a procedure for forecasting time series data based on an additive model where non-linear trends are fit with yearly, weekly, and daily seasonality, plus holiday effects. It works best with time series that have strong seasonal effects and several seasons of historical data.
+
+Prophet is open source software released by Facebook’s Core Data Science team. It is available for download on CRAN and PyPI.
+
+```bash
+pip install prophet
+```
+
+## Website
+
+In order to use website you must follow the instruction of streamlit library to deploy (webserver.py) on your localhost.
+Otherwise please click the link below:
+
+https://matinrasoulzad-barjam.streamlit.app
