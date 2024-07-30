@@ -56,9 +56,37 @@ custom_css = """
 st.markdown(custom_css, unsafe_allow_html=True)
 
 st.title('The impact of cancelation of BARJAM(JCPOA) on Iranian Dollar Exchange Rate')
+st.header("Preface")
+st.write('''
+The Joint Comprehensive Plan of Action (JCPOA; Persian: BARJAM), commonly known as the Iran nuclear deal or Iran deal, is an agreement on the Iranian nuclear program reached in Vienna on 14 July 2015, between Iran and the P5+1 (the five permanent members of the United Nations Security Council—China, France, Russia, the United Kingdom, United States—plus Germany) together with the European Union.
+
+Under the JCPOA, Iran agreed to eliminate its stockpile of medium-enriched uranium, cut its stockpile of low-enriched uranium by 98%, and reduce by about two-thirds the number of its gas centrifuges for 13 years.
+
+With the prospective lifting of some sanctions, the agreement was expected to have a significant impact on both the economy of Iran and global markets. The energy sector is particularly important, with Iran having nearly 10 percent of global oil reserves and 18 percent of natural gas reserves. Millions of barrels of Iranian oil might come onto global markets, lowering the price of crude oil.
+
+The economic impact of a partial lifting of sanctions extends beyond the energy sector; The New York Times reported that "consumer-oriented companies, in particular, could find opportunity in this country with 81 million consumers," many of whom are young and prefer Western products. Iran is "considered a strong emerging market play" by investment and trading firms.
+
+''')
+st.image("assets/barjam.jpg")
+st.subheader("Cancelation of BARJAM")
+st.write('''
+After a while, Dispute over access to military sites between Iran & USA occured; Iran banned allowing international inspectors into military sites. Trump and his administration said that Iranian military facilities could be used for nuclear-related activities barred under the agreement. Iran rejected Trump's request to allow inspection of Iran's military sites.
+
+On 13 October 2017 President Trump announced that he would not make the certification required under the Iran Nuclear Agreement Review Act.
+
+On 8 May 2018 the United States officially withdrew from the agreement after U.S. President Donald Trump signed a Presidential Memorandum ordering the reinstatement of harsher sanctions.
+
+After withdrawing from the deal, the U.S. imposed new sanctions on Iran under the policy of "maximum pressure." As these sanctions were global in scope, they applied to all countries and companies doing trade and business with Iran, effectively constituting a new global sanctions regime against Iran. The White House described it as "the toughest sanctions regime ever imposed", implying that the new sanctions exceeded the pre-JCPOA ones in scope.
+
+Sanctions play an enormous in Iran's economic policies. Therefore, after 2018 the Dollor-Rial exchange rate has increased significatly. In this review we will inspect the impact of BARJAM cancelation on the Dollor-Rial exchange rate:
+
+''')
 st.header("Dollor-Rial Exchange rate DataFrame")
-###################################################
-st.page_link("https://github.com/Matin-Rasoulzad/The-Impact-of-BARJAM--JCPOA--Cancellation-on-the-Iranian-Dollar-Exchange-Rate/blob/main/Dollor_Rate_Dataset.xlsx",label="Click here to see my dataset or the website crawler")
+st.write('''
+I have used "Selenium", "Requests" & "BeautifulSoup" libraries in python to build an online Web-scrapper. This way I've extracted everyday's Dollor-Rial exchange rate from 2011 to 2024.
+''')
+st.image("assets/webscrapper.png")
+st.page_link("https://github.com/Matin-Rasoulzad/The-Impact-of-BARJAM--JCPOA--Cancellation-on-the-Iranian-Dollar-Exchange-Rate/blob/main/Dollor_Rate_Dataset.xlsx",label="Click here to download the dataset.")
 df = pd.read_excel("Dollor_Rate_Dataset.xlsx")
 df.sort_index(ascending=False,inplace=True)
 df = df.reset_index(drop=True)
@@ -72,17 +100,30 @@ st.write(df)
 ###################################################
 df["ds"] = df["Date"]
 df["y"] = df["Mean"]
+st.write("You can also observe data using plot below. The plot is seperated to before & after the cancellation of BARJAM.")
+xy_train = df.query('Date < "2018-05-01"')
+xy_test = df.query('Date > "2018-05-01"')
+fig = plt.figure(figsize=(5,5))
+sns.lineplot(x=xy_train["Date"],y=xy_train["Mean"],color="darkblue",label="Before 2018(BARJAM cancellation)")
+sns.lineplot(x=xy_test["Date"],y=xy_test["Mean"],color="darkred",label="After 2018(BARJAM cancellation)")
+plt.legend(alignment="center")
+st.plotly_chart(fig,use_container_width=True)
 
 st.html('''<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Exchange Rate with Moving Averages</title>
 </head>
 <body>
-    <h1>Exchange Rate with 30-Day, 90-Day & 365-Day Moving Averages</h1>
-    <p>This plot shows the exchange rate of a currency pair over time. It includes:</p>
+    <h1>Technical analysis</h1>
+    <p>In finance, technical analysis is an analysis methodology for analysing and forecasting the direction of prices through the study of past market data, primarily price and volume. In
+    this research we use SMA, a tool for finance scientist, to observe the overall trend of the market
+    </p>
+    <h3>1. Exchange Rate with 30-Day, 90-Day & 365-Day Moving Averages</h3>
+    <p>A simple moving average (SMA) is an arithmetic moving average calculated by adding recent prices and then dividing that figure by the number of time periods in the calculation average.<br>
+    SMA is one of the core indicators in technical analysis and is usually the easiest moving average to construct. The aim of all moving averages is to establish the direction in which the price of a security is moving based on previous prices. Since SMA is constructed using past closing prices, it is a lag indicator.
+    </p>
     <ul>
         <li><strong>Exchange Rate Line:</strong> The main line represents the daily exchange rate values.</li>
         <li><strong>30-Day Simple Moving Average (SMA30):</strong> A line that smooths the exchange rate by averaging the last 30 days, showing short-term trends.</li>
@@ -94,6 +135,7 @@ st.html('''<!DOCTYPE html>
         <li><strong>Volatility:</strong> Comparing the exchange rate with the SMAs shows how stable or volatile the currency is.</li>
         <li><strong>Market Signals:</strong> Crossings between SMA30 and SMA90 may suggest buying or selling opportunities.</li>
     </ul>
+    <p>This plot shows the exchange rate of a currency pair over time.</p>
 </body>
 </html>''')
 
@@ -116,11 +158,11 @@ st.html('''<!DOCTYPE html>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Polynomial Trendline Analysis</title>
 </head>
 <body>
-    <h1>Polynomial Trendline Analysis</h1>
-    <p>This plot displays the trendline fitting of a dataset using polynomial regressions of varying degrees, ranging from 1st to 22nd degree. The key components are:</p>
+    <h3>2. Polynomial Trendline Analysis</h3>
+    <p>A polynomial trendline is a curved line that is used when data fluctuates. It is useful, for example, for analyzing gains and losses over a large data set. The order of the polynomial can be determined by the number of fluctuations in the data or by how many bends (hills and valleys) appear in the curve.</p>
+    <p> the polynomial trendline analysis helps in understanding how different degrees of polynomial regression can model the data and which degree provides the best balance between accuracy and generalizability.</p>
     <ul>
         <li><strong>Data Points:</strong> The plot shows the original data points for which the polynomial trendlines are fitted.</li>
         <li><strong>Polynomial Trendlines:</strong> Multiple trendlines are included, each representing a polynomial fit from degree 1 (linear) to degree 22 (highly complex). Each polynomial line is fitted to the data points to demonstrate how well different polynomial degrees capture the underlying trend.</li>
@@ -131,7 +173,8 @@ st.html('''<!DOCTYPE html>
         <li><strong>Overfitting:</strong> While higher-degree polynomials may have a higher accuracy on the training data, they can also lead to overfitting. This means they might capture noise rather than the true underlying trend.</li>
         <li><strong>Model Selection:</strong> It is crucial to balance fit and complexity. Polynomial degrees that are too high can result in a model that is too sensitive to the training data, while lower degrees may not capture the trend accurately enough.</li>
     </ul>
-    <p>Overall, the polynomial trendline analysis helps in understanding how different degrees of polynomial regression can model the data and which degree provides the best balance between accuracy and generalizability.</p>
+    <p>This plot displays the trendline fitting of a dataset using polynomial regressions of varying degrees, ranging from 1st to 22nd degree.</p>
+    
 </body>
 </html>''')
 
@@ -156,69 +199,44 @@ plt.grid(True)
 
 st.plotly_chart(fig,use_container_width=True)
 
+i = st.slider(min_value=1,max_value=22,value=12,label="You can adjust the Polynomial Degree of the plot below thought the slider:")
 fig =plt.figure(figsize=(5, 5))
-i = st.slider(min_value=1,max_value=22,value=12,label="Polynomial Degree")
 fit = np.polyfit(x, y, i)
 trendline = np.polyval(fit, x)
 plt.plot(df['Date'], df['Mean'], '-', label='Data')
 plt.plot(df['Date'], trendline, label=f'Poly {i} Trendline', color='red')
 acc = r2_score(trendline,df["y"])
 plt.legend()
-
+st.plotly_chart(fig,use_container_width=True)
 st.text(f'Polynomial Degree {i} | ACC: {acc*100: 2.2f}')
-st.plotly_chart(fig,use_container_width=True)
-st.html('''<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dollar Exchange Rate Regression Project</title>
-</head>
-<body>
-    <h1>Effect of BARJAM on Iranian Dollar Exchange Rate</h1>
-    <p>
-        This project analyzes the impact of the Joint Comprehensive Plan of Action (JCPOA), commonly known as BARJAM, on the exchange rate of the Iranian rial against the US dollar. BARJAM is an agreement reached between Iran and several world powers in 2015, aimed at curbing Iran's nuclear program in exchange for relief from international sanctions. The deal significantly affected Iran's economy and currency value due to changes in trade and financial relations. Our regression analysis explores how the implementation and changes in BARJAM influenced the fluctuations in the dollar exchange rate in Iran.
-    </p>
-</body>
-</html>''')
-
-xy_train = df.query('Date < "2018-05-01"')
-xy_test = df.query('Date > "2018-05-01"')
-fig = plt.figure(figsize=(5,5))
-sns.lineplot(x=xy_train["Date"],y=xy_train["Mean"],color="darkblue",label="Before 2018(BARJAM)")
-sns.lineplot(x=xy_test["Date"],y=xy_test["Mean"],color="darkred",label="After 2018(BARJAM)")
-plt.legend(alignment="center")
-
-st.plotly_chart(fig,use_container_width=True)
+st.header("Using neural network & regression models to predict and evaluate")
+st.write("A neural network is a method in artificial intelligence that teaches computers to process data in a way that is inspired by the human brain.")
+st.write("To predict the impact of new American and European sanctions on the Iranian economy, we analyse exchange rate (USD/IRR) before the sanctions. Using time series forecasting methods like Pophet,we project this indicator under a baseline scenario without the new sanctions. We then adjust the model to incorporate the potential effects of the sanctions, creating a parallel scenario. By comparing the projected indicators from both scenarios, we can assess the economic impact, highlighting differences in exchange rates, inflation, and overall economic growth to quantify the sanctions' effects.")
 
 m = Prophet(seasonality_mode="multiplicative",weekly_seasonality=True)
 m.fit(xy_train[["ds","y"]])
 xy_pred = m.predict(xy_train[["ds","y"]])[["ds","yhat"]]
-
-st.html('''<p>Training Meta Prophet neural network on <b>2012</b> to <b>2018</b> daily dollor rate. As you see, the training is doing very well! <p>
-<p>Training score on train set with the method of r_squared is:<b> 0.95 </b> <p>''')
+st.write("As said above we use Prophet neural network to predict the regression relationship between features. In this research we used Meta(.aka: Facebook) Prophet to fit the training data before 2018:")
 
 fig = plt.figure(figsize=(5,5))
 sns.lineplot(x=xy_train["Date"],y=xy_train["Mean"],color="darkblue",label="Before 2018 | Actual")
 sns.lineplot(x=xy_pred["ds"],y=xy_pred["yhat"],color="orange",label="Before 2018 | Predicted")
 
 st.plotly_chart(fig,use_container_width=True)
-
-st.markdown('''# Impact of BARJAM on Iranian Dollar Exchange Rate
+st.html("<p>As it shown the accuracy of model on training data is <b>95.1%</b> which is a accurate score & It is indeed reliable.</p>")
+st.markdown('''# My own forecast of Dollor rate based on the model
 
 The following plot illustrates the projected exchange rate of the Iranian rial (IRR) against the US dollar (USD) by the end of 2024 under the scenario where the Joint Comprehensive Plan of Action (JCPOA), also known as BARJAM, had not been canceled. The plot demonstrates the significant impact that the continuation of BARJAM could have had on stabilizing the Iranian currency.
 
-## Plot Description
-
 The plot displays the predicted exchange rate in rials against the US dollar for the end of 2024 under two scenarios:
 
-- **Scenario 1:** If BARJAM had been held and not canceled, the exchange rate would have been projected to reach approximately 10,000 rials per US dollar.
-- **Scenario 2:** Without BARJAM, the exchange rate is projected to rise to around 60,000 rials per US dollar.
+- **Scenario 1:** If BARJAM had been held and not canceled, the exchange rate would have been projected to reach approximately 100,000 rials per US dollar.
+- **Scenario 2:** Without BARJAM, the exchange rate is projected to rise to around 600,000 rials per US dollar.
 
 Additionally, the plot includes a prediction range showing the potential variability in the exchange rate:
 
 - **Lower Bound:** Approximately 1,000 rials per US dollar, indicating the best-case scenario with significant stabilization.
-- **Upper Bound:** Approximately 30,000 rials per US dollar, representing the worst-case scenario within the expected range.
+- **Upper Bound:** Approximately 300,000 rials per US dollar, representing the worst-case scenario within the expected range.
 
 This visualization highlights the substantial difference that maintaining BARJAM could make in stabilizing the exchange rate and underscores the uncertainty and potential range of outcomes if BARJAM had continued.''')
 
@@ -229,7 +247,7 @@ for index, num in enumerate(un_fcst["yhat_lower"]):
 fig = m.plot(un_fcst,include_legend=True)
 st.pyplot(fig,use_container_width=True)
 
-
+st.write("The plot below also represents the overall predicted exchange rate by the end of 2024")
 xy_forecast = pd.concat([fcst,xy_pred])[["ds","yhat"]]
 fig = go.Figure()
 fig.add_trace(go.Scatter(x=df["Date"], y=df["Mean"], mode='lines', name='Actual', line=dict(color='darkblue')))
@@ -237,21 +255,17 @@ fig.add_trace(go.Scatter(x=xy_forecast["ds"], y=xy_forecast["yhat"], mode='lines
 fig.add_vline(x=dt.datetime(2018, 5, 1), line_width=3, line_color="firebrick")
 fig.add_annotation(x=dt.datetime(2021, 1, 1), y=600000, text='"Barjam" suspended', showarrow=False, font=dict(size=23, color="firebrick"))
 fig.update_layout(
-    width=1270,
+    width=1480,
     height=600,
-    title="Actual vs Predicted",
     xaxis_title="Date",
     yaxis_title="Value"
 )
 st.plotly_chart(fig, use_container_width=True)
 
 
-st.markdown('''# Analysis of Dollar Exchange Rate Fluctuations
+st.markdown('''# Analysis of Dollar Exchange Rate Fluctuations after the new sanctions
 
-The following plot illustrates the fluctuations in the Iranian dollar exchange rate over time, highlighting the patterns of hype and subsequent downturns. The plot reveals a notable symmetry in the data, where periods of significant increase in the dollar rate are often followed by corresponding drops.
-
-## Plot Description
-
+The following plot illustrates the fluctuations in the Iranian dollar exchange rate over time, highlighting the patterns of hype and subsequent downturns.
 The plot demonstrates the behavior of the dollar exchange rate with the following observations:
 
 - **Symmetric Pattern:** The plot exhibits a symmetric pattern of fluctuations. Whenever the dollar rate experiences a sharp rise, it is frequently followed by a notable decrease. This symmetry suggests a cyclical behavior where the rate goes up significantly and then experiences a substantial drop.
@@ -297,9 +311,10 @@ fig.update_layout(
 
 # Display the chart using Streamlit
 st.plotly_chart(fig, use_container_width=True)
+st.write(''' The plot reveals a notable symmetry in the data, where periods of significant increase in the dollar rate are often followed by corresponding drops."
+         Also, It's indeed absolutely obvious that the market fluctuation has been increased after the new sanctions due to BARJAM cancellation. It represents that market stability is significantly affected.''')
 
-
-st.markdown('''# Time Series Decomposition
+st.markdown('''# Analysis on Time Series and its Decomposition
 
 In this analysis, we decompose the time series data using the `seasonal_decompose` function from the `statsmodels` library. Decomposition helps us understand the underlying components of the time series, including the trend, seasonal patterns, and residuals.
 
@@ -312,8 +327,6 @@ We performed an additive decomposition of the time series data with a specified 
 - **Seasonal Component**: The repeating, periodic fluctuations in the data, typically reflecting seasonal effects.
 - **Residual Component**: The remaining noise or irregular components after removing the trend and seasonal effects.
 
-## Plot Description
-
 The following plots illustrate each component of the decomposition:
 
 1. **Original Series**: Displays the raw time series data. This is the input data before any decomposition is applied.
@@ -323,7 +336,7 @@ The following plots illustrate each component of the decomposition:
 
 
 fig = plt.figure(figsize=(15,10))
-i = st.slider(min_value=30,max_value=120,value=90,label="Set period")
+i = st.slider(min_value=30,max_value=120,value=90,label="You can adjust the Period of the plot below thought the slider:")
 decomposition = seasonal_decompose(df['Mean'], model='additive', period=i)  # Adjust period if needed
 trend = decomposition.trend
 seasonal = decomposition.seasonal
@@ -369,8 +382,6 @@ The Autocorrelation Function (ACF) measures the correlation of the time series w
 
 The Partial Autocorrelation Function (PACF) measures the correlation between the time series and its lagged values, while controlling for the effects of intermediate lags. It is useful for identifying the order of autoregressive (AR) components in time series models.
 
-## Plot Description
-
 The following plots provide insights into the autocorrelation and partial autocorrelation of the time series:
 ''')
 
@@ -380,7 +391,7 @@ data = df['Mean']
 fig = plt.figure(figsize=(14, 6))
 plt.subplot(1, 2, 1)
 
-i = st.slider(min_value=40,max_value=120,value=40,label="Set lags")
+i = st.slider(min_value=40,max_value=120,value=40,label="You can adjust the Lags of the plot below thought the slider:")
 plot_acf(data, ax=plt.gca(), lags=40)
 plt.title('Autocorrelation Function (ACF)')
 
@@ -390,12 +401,13 @@ plt.title('Partial Autocorrelation Function (PACF)')
 
 plt.tight_layout()
 st.pyplot(fig)
-
+st.header("Conclusion")
+st.write('''This project analyzes the impact of the Joint Comprehensive Plan of Action (JCPOA), commonly known as BARJAM, on the exchange rate of the Iranian rial against the US dollar. BARJAM is an agreement reached between Iran and several world powers in 2015, aimed at curbing Iran's nuclear program in exchange for relief from international sanctions. The deal significantly affected Iran's economy and currency value due to changes in trade and financial relations. Our regression analysis explores how the implementation and changes in BARJAM influenced the fluctuations in the dollar exchange rate in Iran.''')
 # Footer with centered text and icons
 st.markdown("""
     <div class="footer-text">
         <br><br><br><br><br>
-        <p>Made with 💕👌 by Matin Rasoulzad</p>
+        <p>Made with ❤️ by Matin Rasoulzad</p>
         <div class="footer-icons">
             <a href="https://www.linkedin.com/in/matin-rasoulzad/" target="_blank"><img src="https://img.icons8.com/?size=100&id=Zmq8UwmfMf8B&format=png&color=000000"/></a>
                         <a href="mailto:work.matinrasoulzad@gmail.com"><img src="https://img.icons8.com/?size=100&id=Y2GfpkgYNp42&format=png&color=000000"/></a>
