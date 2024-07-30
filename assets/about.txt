@@ -1,0 +1,6 @@
+This favicon was generated using the following font:
+
+- Font Title: REM
+- Font Author: Copyright 2019 The REM Project Authors (https://github.com/octaviopardo/REM)
+- Font Source: https://fonts.gstatic.com/s/rem/v2/WnzgHAIoSDyHbRjfsYumpRvUPELtrToUbIqIfBU.ttf
+- Font License: SIL Open Font License, 1.1 (http://scripts.sil.org/OFL))
