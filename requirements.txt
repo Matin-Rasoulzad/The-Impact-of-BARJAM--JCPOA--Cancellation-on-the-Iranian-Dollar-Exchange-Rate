@@ -1,5 +1,4 @@
 datetime
-warnings
 matplotlib
 numpy
 pandas
