@@ -8,3 +8,4 @@ seaborn
 streamlit
 scikit-learn
 statsmodels
+openpyxl
