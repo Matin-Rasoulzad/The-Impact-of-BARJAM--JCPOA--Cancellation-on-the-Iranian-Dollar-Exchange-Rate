@@ -69,6 +69,9 @@ pip install prophet
 ## Website
 
 In order to use website you must follow the instruction of streamlit library to deploy (webserver.py) on your localhost.
+
+![image](https://github.com/user-attachments/assets/0cd67d9c-ca30-446a-b816-0309b4efaff9)
+
 Otherwise please click the link below:
 
 https://matinrasoulzad-barjam.streamlit.app
